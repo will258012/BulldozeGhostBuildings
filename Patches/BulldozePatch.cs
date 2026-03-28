@@ -29,8 +29,21 @@ namespace BulldozeGhostBuildings.Patches
         }
 
         [HarmonyPatch(typeof(BuildingManager), nameof(BuildingManager.ReleaseBuilding))]
+        [HarmonyPrefix]
+        public static bool ReleaseBuildingPrefixPatch(ref BuildingManager __instance, ushort building)
+        {
+            ref var b = ref __instance.m_buildings.m_buffer[building];
+
+            b.m_flags = b.m_flags.ClearFlags(Building.Flags.Deleted);
+            b.m_flags = b.m_flags.SetFlags(Building.Flags.Created);
+
+            b.m_eventIndex = b.m_eventRouteIndex = default;
+            return true;
+        }
+
+        [HarmonyPatch(typeof(BuildingManager), nameof(BuildingManager.ReleaseBuilding))]
         [HarmonyPostfix]
-        public static void ReleaseBuildingPatch(ref BuildingManager __instance, ushort building)
+        public static void ReleaseBuildingPostfixPatch(ref BuildingManager __instance, ushort building)
         {
             /*
             Game can load buildings that have citizen units, but when the building is released, the citizen units won't be reset.
@@ -38,8 +51,8 @@ namespace BulldozeGhostBuildings.Patches
             because they still have citizen units data.
             This manually resets citizen units to prevent the game from loading these buildings again.
             */
-            __instance.m_buildings.m_buffer[building].m_citizenUnits =
-            __instance.m_buildings.m_buffer[building].m_citizenCount = default;
+            ref var b = ref __instance.m_buildings.m_buffer[building];
+            b.m_citizenUnits = b.m_citizenCount = default;
         }
     }
 }

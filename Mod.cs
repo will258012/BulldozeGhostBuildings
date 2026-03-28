@@ -3,6 +3,7 @@ using ColossalFramework.UI;
 using ICities;
 using System;
 using System.Collections;
+using System.Linq;
 using WillCommons;
 namespace BulldozeGhostBuildings
 {
@@ -39,26 +40,39 @@ namespace BulldozeGhostBuildings
 
                 for (ushort i = 0; i < BuildingManager.instance.m_buildings.m_buffer.Length; i++)
                 {
-                    var building = BuildingManager.instance.m_buildings.m_buffer[i];
-                    if (building.m_buildIndex != default &&
-                        building.m_flags != Building.Flags.None &&
-                        !building.m_flags.IsFlagSet(Building.Flags.Deleted) &&
-                        !building.m_flags.IsFlagSet(Building.Flags.Created))
+                    ref var building = ref BuildingManager.instance.m_buildings.m_buffer[i];
+
+                    if (building.m_buildIndex == default || building.m_flags == Building.Flags.None)
+                        continue;
+
+                    bool isGhost =
+                        (!building.m_flags.IsFlagSet(Building.Flags.Created) && !building.m_flags.IsFlagSet(Building.Flags.Deleted))
+                        ||
+                        (building.m_flags.IsFlagSet(Building.Flags.Created) && building.m_flags.IsFlagSet(Building.Flags.Deleted))
+                        ||
+                        (!building.m_flags.IsFlagSet(Building.Flags.Created) && building.m_flags.IsFlagSet(Building.Flags.Deleted)
+                        );
+
+                    if (isGhost)
+                    {
+                        Logging.Msg("Find building to delete: " + i + " " +
+                            string.Join(",", building.m_flags.GetFlags().Select(f => f.ToString()).ToArray()));
+
                         buildingsToBulldoze.Add(i);
+                    }
                 }
 
-                foreach (var building in buildingsToBulldoze)
+                foreach (var buildingId in buildingsToBulldoze)
                 {
-                    SimulationManager.instance.AddAction(ReleaseBuilding(building));
+                    SimulationManager.instance.AddAction(ReleaseBuilding(buildingId));
                 }
 
 
-                IEnumerator ReleaseBuilding(ushort building)
+                IEnumerator ReleaseBuilding(ushort buildingId)
                 {
-                    BuildingManager.instance.ReleaseBuilding(building);
-
-                    var infoClass = BuildingManager.instance.m_buildings.m_buffer[building].Info.m_class;
-                    BuildingManager.instance.RemoveServiceBuilding(building, infoClass.m_service);
+                    Logging.Msg("Releasing " + buildingId);
+                    BuildingManager.instance.ReleaseBuilding(buildingId);
+                    BuildingManager.instance.RemoveServiceBuilding(buildingId, BuildingManager.instance.m_buildings.m_buffer[buildingId].Info.m_class.m_service);
                     yield return null;
                 }
 
