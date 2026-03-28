@@ -1,0 +1,72 @@
+name: "Support"
+description: "Get support when this mod cannot remove your ghost buildings"
+labels: ["bug"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for taking the time to fill out this ticket!
+  
+  - type: checkboxes
+    id: checklist
+    attributes:
+      label: "Checklist"
+      description: "Please **review and confirm** each of the following items:"
+      options:
+        - label: "I confirm that I am using the **latest version of the game and this mod**, and that the mod is **installed correctly**."
+          required: true
+        - label: "I have already tried using the **in-game bulldozer** and the **button in the mod settings**, but neither could remove the problematic building."
+          required: true
+        - label: "I confirm that I will **move the problematic building to the map edge**, or otherwise **describe its location clearly** (near landmarks, districts, or notable areas)."
+          required: true
+        - label: "I will fill in all required information below **accurately and completely** as requested."
+          required: true
+
+  - type: input
+    id: save
+    attributes:
+      label: "Workshop save link"
+      description: "Upload the problematic save to the Steam Workshop."
+      placeholder: "https://steamcommunity.com/sharedfiles/filedetails/?id=XXXXX"
+    validations:
+      required: true
+
+  - type: input
+    id: log
+    attributes:
+      label: "Game log link"
+      description: "[Where is the log?](https://steamcommunity.com/sharedfiles/filedetails/?id=463645931)"
+      placeholder: "https://gist.github.com/XXXXX"
+    validations:
+      required: true
+
+  - type: textarea
+    id: mods_assets
+    attributes:
+      label: "Mods / Assets collection link"
+      description: "Provide a Skyve playset ID or a Workshop collection **used by the problematic save**. If the issue is caused by a single asset, also include its Workshop link."
+      placeholder: "https://steamcommunity.com/sharedfiles/filedetails/?id=XXXXX"
+    validations:
+      required: true
+
+  - type: input
+    id: building_location
+    attributes:
+      label: "Problematic building location"
+      description: "Describe where the ghost building is located (or confirm that it has been moved to the map edge)."
+      placeholder: "Example: Near the city hall / Next to the river"
+    validations:
+      required: true
+  - type: textarea
+    id: building_screenshot
+    attributes:
+      label: "Problematic building screenshot"
+      placeholder: "Paste a screenshot clearly showing the problematic building and its surroundings"
+    validations:
+      required: true
+
+  - type: textarea
+    id: additional_info
+    attributes:
+      label: "Anything else?"
+      placeholder: "Provide extra details to help diagnose the issue"

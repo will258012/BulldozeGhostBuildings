@@ -1,0 +1,73 @@
+name: "支持请求"
+description: "当本模组无法清除你的幽灵建筑时，请使用本模板获取支持"
+labels: ["bug"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        感谢您填写此模板！
+
+  - type: checkboxes
+    id: checklist
+    attributes:
+      label: "检查项"
+      description: "请逐个检查下列项目，并勾选确认："
+      options:
+        - label: "我已确认使用**最新版本的游戏与本模组**，并且模组已**正确安装**。"
+          required: true
+        - label: "我已尝试使用过**游戏内推土机**和**模组设置中的按钮**，但两者都无法删除该问题建筑。"
+          required: true
+        - label: "我会将问题建筑**移动到地图边缘**，或在无法移动的情况下**清楚描述其位置**（如附近地标、区域名称等）。"
+          required: true
+        - label: "我会按照要求**准确完整**填写以下信息。"
+          required: true
+
+  - type: input
+    id: save
+    attributes:
+      label: "存档的创意工坊链接"
+      description: "请将出现问题的存档上传到创意工坊。"
+      placeholder: "https://steamcommunity.com/sharedfiles/filedetails/?id=XXXXX"
+    validations:
+      required: true
+
+  - type: input
+    id: log
+    attributes:
+      label: "游戏日志链接"
+      description: "[日志在哪里？](https://steamcommunity.com/sharedfiles/filedetails/?id=463645931)"
+      placeholder: "https://gist.github.com/XXXXX"
+    validations:
+      required: true
+
+  - type: textarea
+    id: mods_assets
+    attributes:
+      label: "模组 / 资产合集链接"
+      description: "请提供**该存档正在使用**的 Skyve 配置文件ID或创意工坊合集。若问题来自单个资产，也请附上该资产链接。"
+      placeholder: "https://steamcommunity.com/sharedfiles/filedetails/?id=XXXXX"
+    validations:
+      required: true
+
+  - type: input
+    id: building_location
+    attributes:
+      label: "问题建筑位置"
+      description: "描述幽灵建筑所在的位置（或确认已移动到地图边缘）。"
+      placeholder: "例如：在市政厅旁 / 在河边 / 在某地标附近"
+    validations:
+      required: true
+
+  - type: textarea
+    id: building_screenshot
+    attributes:
+      label: "问题建筑截图"
+      placeholder: "请粘贴能清晰显示问题建筑及其周围环境的截图"
+    validations:
+      required: true
+
+  - type: textarea
+    id: additional_info
+    attributes:
+      label: "其他"
+      placeholder: "提供有助于诊断问题的额外信息"
